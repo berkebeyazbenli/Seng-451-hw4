@@ -1,4 +1,5 @@
 from fastapi import FastAPI, BackgroundTasks
+from fastapi.middleware.cors import CORSMiddleware
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from experts import KnowledgeSources
@@ -6,6 +7,24 @@ import json
 import os
 
 app = FastAPI()
+
+# CORS ayarları (frontend farklı domain'deyse)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Production'da spesifik domain kullanın
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Health check endpoints
+@app.get("/")
+async def root():
+    return {"status": "ok", "message": "Backend is running"}
+
+@app.get("/health")
+async def health():
+    return {"status": "healthy", "service": "heart-diagnosis-backend"}
 
 # Environment variables'dan oku, yoksa default değerleri kullan
 DB_CONFIG = {
