@@ -4,6 +4,7 @@ import psycopg2
 import time
 import json
 import pandas as pd
+import os
 
 st.set_page_config(page_title="Grup-17 Blackboard Diagnosis", layout="wide")
 st.title("🩺 Kalp Teşhis Destek Sistemi (Group-17)")
@@ -19,9 +20,12 @@ with st.sidebar:
     # Diğerleri varsayılan
     patient_data = {"age": age, "trestbps": trestbps, "chol": chol, "cp": cp, "thalach": thalach, "sex": 1, "fbs": 0, "restecg": 0, "exang": 0, "oldpeak": 1.0, "slope": 1, "ca": 0, "thal": 2}
 
+# Backend URL'i environment variable'dan oku
+BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:8000")
+
 if st.sidebar.button("Teşhis Koy"):
     try:
-        res = requests.post("http://localhost:8000/submit-patient", json=patient_data)
+        res = requests.post(f"{BACKEND_URL}/submit-patient", json=patient_data)
         if res.status_code == 200:
             record_id = res.json()["id"]
             st.success(f"✅ Hasta kaydı oluşturuldu (ID: {record_id})")
@@ -38,10 +42,10 @@ if st.sidebar.button("Teşhis Koy"):
                     
                     try:
                         conn = psycopg2.connect(
-                            host="database-1.c814i00i8t9k.us-east-1.rds.amazonaws.com",
-                            database="postgres",
-                            user="postgres",
-                            password="Bekobeko42"
+                            host=os.getenv("DB_HOST", "database-1.c814i00i8t9k.us-east-1.rds.amazonaws.com"),
+                            database=os.getenv("DB_NAME", "postgres"),
+                            user=os.getenv("DB_USER", "postgres"),
+                            password=os.getenv("DB_PASSWORD", "Bekobeko42")
                         )
                         cur = conn.cursor()
                         cur.execute(

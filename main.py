@@ -3,14 +3,16 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 from experts import KnowledgeSources
 import json
+import os
 
 app = FastAPI()
 
+# Environment variables'dan oku, yoksa default değerleri kullan
 DB_CONFIG = {
-    "host": "database-1.c814i00i8t9k.us-east-1.rds.amazonaws.com",
-    "database": "postgres",
-    "user": "postgres",
-    "password": "Bekobeko42",
+    "host": os.getenv("DB_HOST", "database-1.c814i00i8t9k.us-east-1.rds.amazonaws.com"),
+    "database": os.getenv("DB_NAME", "postgres"),
+    "user": os.getenv("DB_USER", "postgres"),
+    "password": os.getenv("DB_PASSWORD", "Bekobeko42"),
     "connect_timeout": 5
 }
 
