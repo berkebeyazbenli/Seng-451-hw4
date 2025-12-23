@@ -10,7 +10,9 @@ Backend'i deploy etmeden Streamlit frontend çalışmaz!
 
 ## 🚀 Deployment Seçenekleri
 
-### Seçenek 1: Render.com (Önerilen - Kolay ve Ücretsiz)
+### Seçenek 1: Render.com (Önerilen - Otomatik Deploy ✅)
+
+Render.com **otomatik deploy** yapar! GitHub'a push ettiğinizde otomatik olarak deploy edilir.
 
 #### Adımlar:
 
@@ -22,6 +24,7 @@ Backend'i deploy etmeden Streamlit frontend çalışmaz!
    - "New +" → "Web Service"
    - GitHub repository'nizi bağlayın: `berkebeyazbenli/Seng-451-hw4`
    - Branch: `main`
+   - ✅ **"Auto-Deploy"** seçeneği aktif olacak (otomatik deploy)
 
 3. **Ayarları Yapın**
    - **Name**: `heart-diagnosis-backend`
@@ -38,12 +41,17 @@ Backend'i deploy etmeden Streamlit frontend çalışmaz!
    DB_PASSWORD=Bekobeko42
    ```
 
-5. **Deploy**
+5. **İlk Deploy**
    - "Create Web Service" butonuna tıklayın
    - 2-3 dakika bekleyin
    - Backend URL'inizi kopyalayın (örn: `https://heart-diagnosis-backend.onrender.com`)
 
-6. **Streamlit Cloud Secrets'ı Güncelleyin**
+6. **Otomatik Deploy Aktif! 🎉**
+   - Artık `main.py`, `experts.py` veya `requirements.txt` değiştiğinde
+   - GitHub'a push ettiğinizde
+   - Render.com **otomatik olarak yeniden deploy edecek**
+
+7. **Streamlit Cloud Secrets'ı Güncelleyin**
    - Streamlit Cloud → App Settings → Secrets
    - `BACKEND_URL` değerini backend URL'inizle güncelleyin:
    ```toml
