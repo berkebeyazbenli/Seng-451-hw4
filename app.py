@@ -192,8 +192,10 @@ if st.sidebar.button("Teşhis Koy"):
                                             "Eşik Değer": rf.get('threshold', 'N/A')
                                         })
                                     if risk_df_data:
-                                        risk_df = pd.DataFrame(risk_df_data)
-                                        st.dataframe(risk_df, use_container_width=True, hide_index=True)
+                                        # Arrow/pyarrow serialization can fail when a column mixes types
+                                        # (e.g. "Değer" being both numbers and strings like "Yok").
+                                        risk_df = pd.DataFrame(risk_df_data).astype(str)
+                                        st.dataframe(risk_df, width="stretch", hide_index=True)
                                 
                                 # Risk skorları detayı (ML'deki gibi)
                                 if clinical_analysis.get('risk_scores'):
