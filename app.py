@@ -6,6 +6,22 @@ import json
 import pandas as pd
 import os
 
+# Streamlit Cloud secrets veya environment variables'dan oku
+try:
+    # Streamlit Cloud secrets
+    DB_HOST = st.secrets.get("DB_HOST", os.getenv("DB_HOST", "database-1.c814i00i8t9k.us-east-1.rds.amazonaws.com"))
+    DB_NAME = st.secrets.get("DB_NAME", os.getenv("DB_NAME", "postgres"))
+    DB_USER = st.secrets.get("DB_USER", os.getenv("DB_USER", "postgres"))
+    DB_PASSWORD = st.secrets.get("DB_PASSWORD", os.getenv("DB_PASSWORD", "Bekobeko42"))
+    BACKEND_URL = st.secrets.get("BACKEND_URL", os.getenv("BACKEND_URL", "http://localhost:8000"))
+except:
+    # Fallback to environment variables
+    DB_HOST = os.getenv("DB_HOST", "database-1.c814i00i8t9k.us-east-1.rds.amazonaws.com")
+    DB_NAME = os.getenv("DB_NAME", "postgres")
+    DB_USER = os.getenv("DB_USER", "postgres")
+    DB_PASSWORD = os.getenv("DB_PASSWORD", "Bekobeko42")
+    BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:8000")
+
 st.set_page_config(page_title="Grup-17 Blackboard Diagnosis", layout="wide")
 st.title("🩺 Kalp Teşhis Destek Sistemi (Group-17)")
 
@@ -19,9 +35,6 @@ with st.sidebar:
     thalach = st.number_input("Maks. Kalp Atış Hızı", 60, 220, 150)
     # Diğerleri varsayılan
     patient_data = {"age": age, "trestbps": trestbps, "chol": chol, "cp": cp, "thalach": thalach, "sex": 1, "fbs": 0, "restecg": 0, "exang": 0, "oldpeak": 1.0, "slope": 1, "ca": 0, "thal": 2}
-
-# Backend URL'i environment variable'dan oku
-BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:8000")
 
 if st.sidebar.button("Teşhis Koy"):
     try:
@@ -42,10 +55,10 @@ if st.sidebar.button("Teşhis Koy"):
                     
                     try:
                         conn = psycopg2.connect(
-                            host=os.getenv("DB_HOST", "database-1.c814i00i8t9k.us-east-1.rds.amazonaws.com"),
-                            database=os.getenv("DB_NAME", "postgres"),
-                            user=os.getenv("DB_USER", "postgres"),
-                            password=os.getenv("DB_PASSWORD", "Bekobeko42")
+                            host=DB_HOST,
+                            database=DB_NAME,
+                            user=DB_USER,
+                            password=DB_PASSWORD
                         )
                         cur = conn.cursor()
                         cur.execute(
