@@ -52,8 +52,9 @@ Thumbs.db
 *.sqlite
 *.sqlite3
 
-# Streamlit
-.streamlit/
+# Streamlit (config.toml hariç - deployment için gerekli)
+# .streamlit/config.toml dosyası commit edilmeli
+.streamlit/secrets.toml
 
 # Jupyter
 .ipynb_checkpoints/
